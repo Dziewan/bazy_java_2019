@@ -24,6 +24,23 @@ public class OrderService {
         //1) wyciagnać liste (iterable) wszystkich orderDetail
         //2) dla każdego, wziąć productid, i sprawdzić w repo jaki jest jego koszt jednostkowy
         //3) do sumy dodać orederDetail.quantity * product.price
+        
+        /*
+		Proponuje działać na BigDecimalach i można pobawić się streamami :) przykład wyliczenia total
+		
+				BigDecimal total = orderDetailRepo.findByOrderId(orderId)
+				.stream()
+				.map(detail -> Optional
+						.ofNullable(productRepo.findById(detail.getProductId())
+								.orElseGet(Product::new)
+								.getPrice())
+						.orElse(new BigDecimal(0.0))
+						.multiply(detail.getQuantity()))
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+                
+                MD
+
+		 */
 
 
         for(OrderDetail detail : orderDetailRepo.getByOrderid(orderid)){
